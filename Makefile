@@ -49,7 +49,7 @@ clean:
 
 # Check config file and profile file validity
 check: $(TARGET)
-	./$(TARGET) profile check ${PROFILE_FILE} --config $(CONFIG_FILE)
+	@./$(TARGET) profile check $(PROFILE_FILE) --config $(CONFIG_FILE)
 
 # Run recommend command with feeds from feeds file
 # Usage: make recommend [OPTS="-v"]
