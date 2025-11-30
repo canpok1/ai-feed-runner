@@ -5,8 +5,11 @@ default_profile:
   ai:
     gemini:
       # 使用するGeminiモデル
-      # 下記URLの仕様に従ったモデルバージョン名を指定してください。
+      # Google Gemini APIで利用可能な任意のモデル名を指定できます。
+      # 利用可能なモデルの一覧は下記URLを参照してください。
       # https://ai.google.dev/gemini-api/docs/models?hl=ja#model-versions
+      #
+      # 例: gemini-2.5-flash, gemini-1.5-pro, gemini-1.5-flash, gemini-2.0-flash-exp など
       type: gemini-2.5-flash
 
       # Gemini APIキー
@@ -57,6 +60,14 @@ default_profile:
     記事内容:
     {{CONTENT}}
   
+  # 記事選択用のプロンプト
+  # 複数の記事から1つを選択する際にAIに与える指示
+  selector_prompt: |
+    以下の記事一覧から、最も興味深い記事を1つ選択してください。
+
+  # 記事紹介文に追加する固定文言
+  # fixed_message: ※固定の文言です。
+
   # 出力先設定
   output:
     # Slack投稿設定
@@ -67,6 +78,7 @@ default_profile:
       enabled: false
       
       # Slack のトークン
+      # botスコープの chat:write に加えて、表示名やアイコンを変更する場合は chat:write.customize が必要です
       # 直接指定する場合は api_token 環境変数から読み込む場合は api_token_env
       # api_tokenとapi_token_envの両方が指定された場合、api_tokenが優先されます
       # api_token: xxxxxx
