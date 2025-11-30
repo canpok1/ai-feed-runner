@@ -18,6 +18,7 @@ ARCHIVE := ai-feed.tar.gz
 TARGET := $(BINDIR)/$(BINARY)
 CONFIG_FILE := config/config.yml
 FEEDS_FILE := config/feeds.txt
+PROFILE_FILE := config/profile-nekomaru.yml
 
 # Construct download URL based on OS and architecture
 DOWNLOAD_URL := $(RELEASE_URL)/ai-feed_$(OS)_$(ARCH).tar.gz
@@ -46,11 +47,11 @@ clean:
 	rm -rf $(BINDIR) $(ARCHIVE)
 	@echo "Cleaned up $(BINDIR)/ and $(ARCHIVE)"
 
-# Check config file validity
+# Check config file and profile file validity
 check: $(TARGET)
-	@./$(TARGET) config check --config $(CONFIG_FILE)
+	@./$(TARGET) profile check $(PROFILE_FILE) --config $(CONFIG_FILE)
 
 # Run recommend command with feeds from feeds file
 # Usage: make recommend [OPTS="-v"]
 recommend: $(TARGET)
-	@./$(TARGET) recommend --config $(CONFIG_FILE) --source $(FEEDS_FILE) $(OPTS)
+	@./$(TARGET) recommend --config $(CONFIG_FILE) --source $(FEEDS_FILE) --profile $(PROFILE_FILE) $(OPTS)
