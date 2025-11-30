@@ -1,0 +1,42 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download ai-feed
+        run: make download
+
+      - name: Verify ai-feed version
+        run: |
+          # Remove 'v' prefix for comparison (e.g., v0.0.6 -> 0.0.6)
+          EXPECTED_VERSION=$(cat .ai-feed-version | sed 's/^v//')
+          echo "Expected version: $EXPECTED_VERSION"
+          OUTPUT=$(make version 2>&1)
+          echo "Version output: [$OUTPUT]"
+          if echo "$OUTPUT" | grep -q "$EXPECTED_VERSION"; then
+            echo "Version verified successfully"
+          else
+            echo "Error: Version mismatch"
+            echo "Expected to find: $EXPECTED_VERSION"
+            echo "In output: $OUTPUT"
+            exit 1
+          fi
+
+      - name: Clean up
+        run: make clean
+
+      - name: Verify clean
+        run: |
+          if [ -d "bin" ]; then
+            echo "Error: bin directory still exists"
+            exit 1
+          fi
+          echo "Clean verified successfully"
