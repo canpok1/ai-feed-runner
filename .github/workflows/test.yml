@@ -16,7 +16,8 @@ jobs:
 
       - name: Verify ai-feed version
         run: |
-          EXPECTED_VERSION=$(cat .ai-feed-version)
+          # Remove 'v' prefix for comparison (e.g., v0.0.6 -> 0.0.6)
+          EXPECTED_VERSION=$(cat .ai-feed-version | sed 's/^v//')
           echo "Expected version: $EXPECTED_VERSION"
           OUTPUT=$(make version)
           echo "Version output: $OUTPUT"
