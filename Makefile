@@ -11,7 +11,8 @@ ARCH := $(shell uname -m)
 GITHUB_REPO := canpok1/ai-feed
 RELEASE_URL := https://github.com/$(GITHUB_REPO)/releases/download/$(VERSION)
 
-# Binary and archive names
+# Directories and file names
+BINDIR := bin
 BINARY := ai-feed
 ARCHIVE := ai-feed.tar.gz
 
@@ -25,15 +26,17 @@ download:
 	@echo "Downloading ai-feed $(VERSION) for $(OS)/$(ARCH)..."
 	@echo "URL: $(DOWNLOAD_URL)"
 	curl -L -o $(ARCHIVE) $(DOWNLOAD_URL)
-	tar -xzf $(ARCHIVE)
-	chmod +x $(BINARY)
-	@echo "Download complete: $(BINARY)"
+	mkdir -p $(BINDIR)
+	tar -xzf $(ARCHIVE) -C $(BINDIR)
+	chmod +x $(BINDIR)/$(BINARY)
+	rm -f $(ARCHIVE)
+	@echo "Download complete: $(BINDIR)/$(BINARY)"
 
 # Run the ai-feed binary with configuration
 run:
-	./$(BINARY) run --config config.yaml --sources sources.yaml
+	./$(BINDIR)/$(BINARY) run --config config.yaml --sources sources.yaml
 
 # Clean up downloaded artifacts
 clean:
-	rm -f $(BINARY) $(ARCHIVE)
-	@echo "Cleaned up $(BINARY) and $(ARCHIVE)"
+	rm -rf $(BINDIR) $(ARCHIVE)
+	@echo "Cleaned up $(BINDIR)/ and $(ARCHIVE)"
