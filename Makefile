@@ -46,7 +46,7 @@ $(TARGET):
 
 # Show the ai-feed version
 version: $(TARGET)
-	./$(TARGET) version
+	@./$(TARGET) version
 
 # Clean up downloaded artifacts
 clean:

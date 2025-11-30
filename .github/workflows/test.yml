@@ -19,12 +19,16 @@ jobs:
           # Remove 'v' prefix for comparison (e.g., v0.0.6 -> 0.0.6)
           EXPECTED_VERSION=$(cat .ai-feed-version | sed 's/^v//')
           echo "Expected version: $EXPECTED_VERSION"
-          OUTPUT=$(make version)
-          echo "Version output: $OUTPUT"
+          echo "Running: ./bin/ai-feed version"
+          ./bin/ai-feed version
+          OUTPUT=$(./bin/ai-feed version 2>&1)
+          echo "Version output: [$OUTPUT]"
           if echo "$OUTPUT" | grep -q "$EXPECTED_VERSION"; then
             echo "Version verified successfully"
           else
             echo "Error: Version mismatch"
+            echo "Expected to find: $EXPECTED_VERSION"
+            echo "In output: $OUTPUT"
             exit 1
           fi
 
