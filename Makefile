@@ -16,11 +16,12 @@ BINDIR := bin
 BINARY := ai-feed
 ARCHIVE := ai-feed.tar.gz
 TARGET := $(BINDIR)/$(BINARY)
+CONFIG_FILE := config/config.yml
 
 # Construct download URL based on OS and architecture
 DOWNLOAD_URL := $(RELEASE_URL)/ai-feed_$(OS)_$(ARCH).tar.gz
 
-.PHONY: download version clean
+.PHONY: download version clean check
 
 # Download the ai-feed binary for the current OS/architecture
 download: $(TARGET)
@@ -43,3 +44,7 @@ version: $(TARGET)
 clean:
 	rm -rf $(BINDIR) $(ARCHIVE)
 	@echo "Cleaned up $(BINDIR)/ and $(ARCHIVE)"
+
+# Check config file validity
+check: $(TARGET)
+	@./$(TARGET) config check --config $(CONFIG_FILE)
