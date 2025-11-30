@@ -32,6 +32,8 @@ jobs:
 
       - name: Check config
         run: make check
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
 
       - name: Clean up
         run: make clean
