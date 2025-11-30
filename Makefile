@@ -21,7 +21,7 @@ CONFIG_FILE := config/config.yml
 # Construct download URL based on OS and architecture
 DOWNLOAD_URL := $(RELEASE_URL)/ai-feed_$(OS)_$(ARCH).tar.gz
 
-.PHONY: download version clean check
+.PHONY: download version clean check recommend
 
 # Download the ai-feed binary for the current OS/architecture
 download: $(TARGET)
@@ -48,3 +48,7 @@ clean:
 # Check config file validity
 check: $(TARGET)
 	@./$(TARGET) config check --config $(CONFIG_FILE)
+
+# Run recommend command with feeds from config/feeds.txt
+recommend: $(TARGET)
+	@./$(TARGET) recommend --config $(CONFIG_FILE) --source config/feeds.txt

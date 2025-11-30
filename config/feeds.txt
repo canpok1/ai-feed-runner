@@ -1,0 +1,2 @@
+https://qiita.com/popular-items/feed.atom
+https://b.hatena.ne.jp/hotentry/it.rss
