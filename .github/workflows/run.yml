@@ -62,14 +62,23 @@ jobs:
 
       - name: Update cache branch
         run: |
+          echo "Checking if cache file exists..."
+          ls -la /tmp/ai-feed/cache/ || echo "Directory not found"
           if [ -f /tmp/ai-feed/cache/recommend_history.jsonl ]; then
+            echo "Cache file found, proceeding..."
             cp /tmp/ai-feed/cache/recommend_history.jsonl cache-branch/
             cd cache-branch
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add recommend_history.jsonl
             if ! git diff --cached --quiet; then
+              echo "Changes detected, committing..."
               git commit --amend -m "Update cache"
               git push --force origin cache
+              echo "Push completed"
+            else
+              echo "No changes to commit"
             fi
+          else
+            echo "Cache file NOT found"
           fi
