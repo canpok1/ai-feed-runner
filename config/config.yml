@@ -131,11 +131,11 @@ default_profile:
 cache:
   # 有効/無効フラグ（省略時はfalse）
   # trueに設定すると投稿済み記事の重複を防ぐことができます
-  enabled: false
-  
+  enabled: true
+
   # キャッシュファイルのパス
   # 省略時はホームディレクトリの ~/.ai-feed/recommend_history.jsonl が使用されます
-  # file_path: ~/.ai-feed/recommend_history.jsonl
+  file_path: /tmp/ai-feed/cache/recommend_history.jsonl
   
   # 最大エントリ数（FIFOで古いものから削除）
   # 省略時は1000件
