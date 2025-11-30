@@ -51,36 +51,16 @@ jobs:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
-      - name: Debug cache settings
-        run: |
-          echo "=== config.yml cache section ==="
-          grep -A 10 "^cache:" config/config.yml || echo "cache section not found"
-          echo ""
-          echo "=== /tmp/ai-feed/ contents ==="
-          find /tmp/ai-feed/ -type f 2>/dev/null || echo "/tmp/ai-feed/ does not exist"
-          echo ""
-          echo "=== ~/.ai-feed/ contents (default path) ==="
-          find ~/.ai-feed/ -type f 2>/dev/null || echo "~/.ai-feed/ does not exist"
-
       - name: Update cache branch
         run: |
-          echo "Checking if cache file exists..."
-          ls -la /tmp/ai-feed/cache/ || echo "Directory not found"
           if [ -f /tmp/ai-feed/cache/recommend_history.jsonl ]; then
-            echo "Cache file found, proceeding..."
             cp /tmp/ai-feed/cache/recommend_history.jsonl cache-branch/
             cd cache-branch
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add recommend_history.jsonl
             if ! git diff --cached --quiet; then
-              echo "Changes detected, committing..."
               git commit --amend -m "Update cache"
               git push --force origin cache
-              echo "Push completed"
-            else
-              echo "No changes to commit"
             fi
-          else
-            echo "Cache file NOT found"
           fi
