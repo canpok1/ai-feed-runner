@@ -16,6 +16,7 @@ BINDIR := bin
 BINARY := ai-feed
 ARCHIVE := ai-feed.tar.gz
 TARGET := $(BINDIR)/$(BINARY)
+CONFIG_FILE := config/config.yml
 
 # Construct download URL based on OS and architecture
 DOWNLOAD_URL := $(RELEASE_URL)/ai-feed_$(OS)_$(ARCH).tar.gz
@@ -46,4 +47,4 @@ clean:
 
 # Check config file validity
 check: $(TARGET)
-	@./$(TARGET) config check --config config/config.yml
+	@./$(TARGET) config check --config $(CONFIG_FILE)
