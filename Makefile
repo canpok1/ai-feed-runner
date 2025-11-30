@@ -29,7 +29,7 @@ TARGET := $(BINDIR)/$(BINARY)
 # Construct download URL based on OS and architecture
 DOWNLOAD_URL := $(RELEASE_URL)/ai-feed_$(OS)_$(ARCH).tar.gz
 
-.PHONY: download run clean
+.PHONY: download version clean
 
 # Download the ai-feed binary for the current OS/architecture
 download: $(TARGET)
@@ -44,9 +44,9 @@ $(TARGET):
 	rm -f $(ARCHIVE)
 	@echo "Download complete: $(TARGET)"
 
-# Run the ai-feed binary with configuration
-run: $(TARGET)
-	./$(TARGET) run --config config.yaml --sources sources.yaml
+# Show the ai-feed version
+version: $(TARGET)
+	./$(TARGET) version
 
 # Clean up downloaded artifacts
 clean:

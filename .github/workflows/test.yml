@@ -1,0 +1,30 @@
+name: Test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download ai-feed
+        run: make download
+
+      - name: Show ai-feed version
+        run: make version
+
+      - name: Clean up
+        run: make clean
+
+      - name: Verify clean
+        run: |
+          if [ -d "bin" ]; then
+            echo "Error: bin directory still exists"
+            exit 1
+          fi
+          echo "Clean verified successfully"
