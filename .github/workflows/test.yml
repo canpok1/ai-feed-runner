@@ -34,6 +34,7 @@ jobs:
         run: make check
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
       - name: Clean up
         run: make clean

@@ -75,17 +75,17 @@ default_profile:
     slack_api:
       # 有効/無効フラグ（省略時はtrue）
       # false に設定すると一時的に無効化できます
-      enabled: false
-      
+      enabled: true
+
       # Slack のトークン
       # botスコープの chat:write に加えて、表示名やアイコンを変更する場合は chat:write.customize が必要です
       # 直接指定する場合は api_token 環境変数から読み込む場合は api_token_env
       # api_tokenとapi_token_envの両方が指定された場合、api_tokenが優先されます
       # api_token: xxxxxx
       api_token_env: SLACK_TOKEN
-      
+
       # 投稿先チャンネル(#付き)
-      channel: "#general"
+      channel: "#random"
       
       # メッセージテンプレート
       # 利用可能なパラメータ:
