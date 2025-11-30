@@ -44,7 +44,7 @@ jobs:
         run: make download
 
       - name: Run recommend
-        run: make recommend RECOMMEND_OPTS="-v"
+        run: make recommend OPTS="-v"
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}

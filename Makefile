@@ -51,6 +51,6 @@ check: $(TARGET)
 	@./$(TARGET) config check --config $(CONFIG_FILE)
 
 # Run recommend command with feeds from feeds file
-# Usage: make recommend [RECOMMEND_OPTS="-v"]
+# Usage: make recommend [OPTS="-v"]
 recommend: $(TARGET)
-	@./$(TARGET) recommend --config $(CONFIG_FILE) --source $(FEEDS_FILE) $(RECOMMEND_OPTS)
+	@./$(TARGET) recommend --config $(CONFIG_FILE) --source $(FEEDS_FILE) $(OPTS)
