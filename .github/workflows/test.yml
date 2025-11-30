@@ -30,9 +30,6 @@ jobs:
             exit 1
           fi
 
-      - name: Initialize config
-        run: make init
-
       - name: Check config
         run: make check
 

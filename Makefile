@@ -20,7 +20,7 @@ TARGET := $(BINDIR)/$(BINARY)
 # Construct download URL based on OS and architecture
 DOWNLOAD_URL := $(RELEASE_URL)/ai-feed_$(OS)_$(ARCH).tar.gz
 
-.PHONY: download version clean init check
+.PHONY: download version clean check
 
 # Download the ai-feed binary for the current OS/architecture
 download: $(TARGET)
@@ -44,20 +44,9 @@ clean:
 	rm -rf $(BINDIR) $(ARCHIVE)
 	@echo "Cleaned up $(BINDIR)/ and $(ARCHIVE)"
 
-# Initialize config file (config/config.yml)
-init: $(TARGET)
-	@if [ -f config/config.yml ]; then \
-		echo "config/config.yml already exists, skipping initialization"; \
-	else \
-		echo "Initializing config/config.yml..."; \
-		./$(TARGET) init; \
-		mkdir -p config; \
-		mv config.yml config/; \
-		echo "Config file created at config/config.yml"; \
-	fi
-
 # Check config file validity
 check: $(TARGET)
 	@echo "Checking config/config.yml..."
-	@./$(TARGET) --config config/config.yml version > /dev/null
+	@./$(TARGET) --config config/config.yml version > /dev/null || \
+		(echo "Error: config/config.yml is invalid or not found" && exit 1)
 	@echo "Config file is valid"
