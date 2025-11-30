@@ -46,7 +46,4 @@ clean:
 
 # Check config file validity
 check: $(TARGET)
-	@echo "Checking config/config.yml..."
-	@./$(TARGET) --config config/config.yml version > /dev/null || \
-		(echo "Error: config/config.yml is invalid or not found" && exit 1)
-	@echo "Config file is valid"
+	@./$(TARGET) config check --config config/config.yml
