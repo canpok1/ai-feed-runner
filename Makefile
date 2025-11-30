@@ -3,18 +3,9 @@
 # Read version from .ai-feed-version file
 VERSION := $(shell cat .ai-feed-version)
 
-# Detect OS and architecture
+# Detect OS and architecture (normalize: aarch64 -> arm64, amd64 -> x86_64)
 OS := $(shell uname -s)
-ARCH_RAW := $(shell uname -m)
-
-# Normalize architecture name (aarch64 -> arm64, amd64 -> x86_64)
-ifeq ($(ARCH_RAW),aarch64)
-	ARCH := arm64
-else ifeq ($(ARCH_RAW),amd64)
-	ARCH := x86_64
-else
-	ARCH := $(ARCH_RAW)
-endif
+ARCH := $(shell uname -m | sed -e 's/aarch64/arm64/' -e 's/amd64/x86_64/')
 
 # GitHub release URL base
 GITHUB_REPO := canpok1/ai-feed
@@ -37,7 +28,7 @@ download: $(TARGET)
 $(TARGET):
 	@echo "Downloading ai-feed $(VERSION) for $(OS)/$(ARCH)..."
 	@echo "URL: $(DOWNLOAD_URL)"
-	curl -L -o $(ARCHIVE) $(DOWNLOAD_URL)
+	curl -fL -o $(ARCHIVE) $(DOWNLOAD_URL)
 	mkdir -p $(BINDIR)
 	tar -xzf $(ARCHIVE) -C $(BINDIR)
 	chmod +x $(TARGET)
