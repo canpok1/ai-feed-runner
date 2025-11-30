@@ -67,8 +67,8 @@ jobs:
             cd cache-branch
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            if ! git diff --quiet; then
-              git add recommend_history.jsonl
+            git add recommend_history.jsonl
+            if ! git diff --cached --quiet; then
               git commit --amend -m "Update cache"
               git push --force origin cache
             fi
