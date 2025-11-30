@@ -41,6 +41,7 @@ jobs:
         run: make recommend
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
       - name: Update cache branch
         run: |
