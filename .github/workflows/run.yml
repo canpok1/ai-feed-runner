@@ -1,0 +1,57 @@
+name: Run AI Feed
+
+on:
+  schedule:
+    # Run at 8:00, 12:00, and 16:00 JST (23:00, 03:00, 07:00 UTC)
+    - cron: '0 23 * * *'
+    - cron: '0 3 * * *'
+    - cron: '0 7 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: ai-feed-runner
+  cancel-in-progress: false
+
+jobs:
+  recommend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Checkout cache branch
+        uses: actions/checkout@v4
+        with:
+          ref: cache
+          path: cache-branch
+
+      - name: Setup cache directory
+        run: |
+          mkdir -p /tmp/ai-feed/cache
+          if [ -f cache-branch/recommend_history.jsonl ]; then
+            cp cache-branch/recommend_history.jsonl /tmp/ai-feed/cache/
+          fi
+
+      - name: Download ai-feed
+        run: make download
+
+      - name: Run recommend
+        run: make recommend
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+      - name: Update cache branch
+        run: |
+          if [ -f /tmp/ai-feed/cache/recommend_history.jsonl ]; then
+            cp /tmp/ai-feed/cache/recommend_history.jsonl cache-branch/
+            cd cache-branch
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            if ! git diff --quiet; then
+              git add recommend_history.jsonl
+              git commit --amend -m "Update cache"
+              git push --force origin cache
+            fi
+          fi
